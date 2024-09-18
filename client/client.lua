@@ -9,15 +9,21 @@ RegisterNUICallback('hideFrame', function(_, cb)
   cb({})
 end)
 
--- Convert to list once spawn points known. Refactor method to include for loop over array. Possible object requirements.
+-- Plaeto bay 490, 13, 69.51
+-- Havering 1857, 3680, 33.79
+
 function PlayerWithinSpawnRange()
-  local spawnZone = vector3(1994.004150, 3810.000000, 32.255104)
-  local radius = 100
+  local spawnZones = { vector3(490, 13, 69.51), vector3(1857, 3680, 33.79) }
+  local radius = 15
   local playerPosition = GetEntityCoords(PlayerPedId())
-  local dstcheck = GetDistanceBetweenCoords(playerPosition, spawnZone)
+  local dstcheck
   local canActivate = false
-  if dstcheck < radius then
-    canActivate = true
+
+  for _, i in ipairs(spawnZones) do
+    dstcheck = GetDistanceBetweenCoords(playerPosition, i)
+    if dstcheck < radius then
+      canActivate = true
+    end
   end
 
   return canActivate
