@@ -1,0 +1,55 @@
+{
+  "BCSO": [
+    "leg09charger",
+    "leg11vic",
+    "leg12caprice",
+    "leg14charger",
+    "leg14ram",
+    "leg16explorer",
+    "leg18charger",
+    "leg18f150",
+    "leg18taurus",
+    "leg19tahoe",
+    "leg20explorer",
+    "leg21durango"
+
+  ],
+    "SAST": [
+    "sast1",
+    "sast2",
+    "sast3",
+    "sast4",
+    "sast5",
+    "sast6",
+    "sast7",
+    "sast8",
+    "sast9",
+    "sast10",
+    "sast11",
+    "sast12",
+    "sast13"
+  ],
+    "SAFD": [
+    "enforcer",
+    "enforcerf",
+    "enforcerta",
+    "enladder",
+    "21silvhd",
+    "bulldog",
+    "skidfiref350",
+    "firechgr",
+    "firef350",
+    "fireram",
+    "firetaurus"
+  ],
+    "LSPD": [
+    "LSPD1",
+    "LSPD2",
+    "LSPD3",
+    "LSPD4",
+    "LSPD5",
+    "LSPD6",
+    "LSPD7",
+    "LSPD8"
+  ]
+}
