@@ -12,10 +12,16 @@ debugData([
     },
 ]);
 
+type VehicleDictionary = {
+    id: string,
+    value: string
+}
+
 const App: React.FC = () => {
     const [selectedFaction, setSelectedFaction] = useState<keyof typeof vehicleList | ''>('');
-    const [vehicles, setVehicles] = useState<string[]>([]);
+    const [vehicles, setVehicles] = useState<VehicleDictionary[]>([]);
     const [selectedVehicle, setSelectedVehicle] = useState("")
+    const vehicleFactions = Object.keys(vehicleList)
 
     const handleFactionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         const faction = event.target.value as keyof typeof vehicleList;
@@ -57,10 +63,9 @@ const App: React.FC = () => {
                                 // @ts-ignore
                                 onChange={handleFactionChange}
                             >
-                                <MenuItem value={"BCSO"}>Blaine County Sheriff Office</MenuItem>
-                                <MenuItem value={"LSPD"}>Los Santos Police Department</MenuItem>
-                                <MenuItem value={"SAST"}>San Andreas State Troopers</MenuItem>
-                                <MenuItem value={"SAFD"}>San Andreas Fire Department</MenuItem>
+                                {vehicleFactions.map((factionName) => (
+                                    <MenuItem value={factionName}>{factionName}</MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
 
@@ -83,7 +88,7 @@ const App: React.FC = () => {
                                 onChange={setVehicleRequest}
                             >
                                 {vehicles.map((vehicle, index) => (
-                                    <MenuItem key={index} value={vehicle} >{vehicle}</MenuItem>
+                                    <MenuItem key={index} value={vehicle.id}>{vehicle.value}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
