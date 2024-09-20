@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./App.css";
 import { debugData } from "../utils/debugData";
 import { fetchNui } from "../utils/fetchNui";
-import { Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, Typography } from "@mui/material";
+import { Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
 import vehicleList from '../assets/vehicleList.json'
+import "./App.css";
 
 debugData([
     {
@@ -40,9 +40,9 @@ const App: React.FC = () => {
 
     return (
         <div className="nui-wrapper">
-            <div className="popup-thing">
+            <div className="nui-form">
                 <Typography variant="h5" gutterBottom marginBottom={4}>Vehicle Spawner</Typography>
-                <FormGroup className="VehicleSpawnForm">
+                <FormGroup>
                     <Stack spacing={3}>
                         <FormControl fullWidth>
                             <InputLabel id="service-faction-label" sx={{ color: "#fff" }}>Service Faction</InputLabel>
