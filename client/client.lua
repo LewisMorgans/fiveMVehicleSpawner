@@ -9,11 +9,8 @@ RegisterNUICallback('hideFrame', function(_, cb)
   cb({})
 end)
 
--- Plaeto bay 490, 13, 69.51
--- Havering 1857, 3680, 33.79
-
 function PlayerWithinSpawnRange()
-  local spawnZones = { vector3(490, 13, 69.51), vector3(1857, 3680, 33.79) }
+  local spawnZones = Config.SpawnZones
   local radius = 15.0
   local playerPosition = GetEntityCoords(PlayerPedId())
 
@@ -30,24 +27,15 @@ function PlayerWithinSpawnRange()
 end
 
 Citizen.CreateThread(function()
+  RegisterKeyMapping('spawnCar', 'Spawn Car', 'keyboard', Config.SpawnKey)
+
   while true do
     Citizen.Wait(0)
-    if PlayerWithinSpawnRange() then
-      DrawTextOnScreen("Press F6 to spawn a vehicle", 0.90, 0.5)     -- Center of the screen
+    if PlayerWithinSpawnRange() and Config.StaticSpawnZonesEnabled == true then
+      DrawTextOnScreen("Press " .. Config.SpawnKey .. " to spawn a vehicle", 0.90, 0.5)
     end
   end
 end)
-
-function DrawTextOnScreen(text, x, y)
-  SetTextFont(0)                    -- Set the font
-  SetTextProportional(1)            -- Make the text proportional
-  SetTextScale(0.0, 0.3)            -- Text scale
-  SetTextColour(255, 255, 255, 255) -- Text color (white)
-  SetTextOutline()                  -- Text outline
-  SetTextEntry("STRING")            -- Prepare the text entry
-  AddTextComponentString(text)      -- Add the text to display
-  DrawText(x, y)                    -- Draw the text at coordinates (x, y)
-end
 
 RegisterNUICallback('spawnVehicle', function(data, cb)
   local playerPed = PlayerPedId()
@@ -77,9 +65,10 @@ RegisterNUICallback('spawnVehicle', function(data, cb)
 end)
 
 RegisterCommand('spawnCar', function()
+  if Config.StaticSpawnZonesEnabled == false then
+    toggleNuiFrame(true)
+  end
   if PlayerWithinSpawnRange() then
     toggleNuiFrame(true)
   end
 end, false)
-
-RegisterKeyMapping('spawnCar', 'Spawn Car', 'keyboard', 'F6')

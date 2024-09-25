@@ -1,9 +1,9 @@
 fx_version "cerulean"
 
-description "Basic React (TypeScript) & Lua Game Scripts Boilerplate"
-author "Project Error"
-version '1.0.0'
-repository 'https://github.com/project-error/fivem-react-boilerplate-lua'
+description "Basic vehicle spawner script based dictionary passed to react FE"
+author "Lewis Morgans"
+version '1.0.0-beta'
+repository 'https://github.com/LewisMorgans/fiveMVehicleSpawner'
 
 lua54 'yes'
 
