@@ -4,9 +4,11 @@
 Install the vehicle spawner by copying the following files into a new folder (name it what ever you want)
 - [client]
   - client.lua
+  - config.lua
+  - utils.lua
+  - vehicleList.lua
 - [web]
   - build
-- config.lua
 - fxmanifest.lua
 
 #### Once done move this folder into your 'resources' folder. Don't forget to update your server.cfg! 
