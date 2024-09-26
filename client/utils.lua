@@ -30,12 +30,12 @@ function debugPrint(...)
 end
 
 function DrawTextOnScreen(text, x, y)
-  SetTextFont(0)                    -- Set the font
-  SetTextProportional(1)            -- Make the text proportional
-  SetTextScale(0.0, 0.3)            -- Text scale
-  SetTextColour(255, 255, 255, 255) -- Text color (white)
-  SetTextOutline()                  -- Text outline
+  SetTextFont(0)
+  SetTextProportional(1)
+  SetTextScale(0.0, 0.3)
+  SetTextColour(255, 255, 255, 255)
+  SetTextOutline()
   SetTextEntry("STRING")            -- Prepare the text entry
   AddTextComponentString(text)      -- Add the text to display
-  DrawText(x, y)                    -- Draw the text at coordinates (x, y)
+  DrawText(x, y)
 end

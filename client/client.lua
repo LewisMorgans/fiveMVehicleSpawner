@@ -64,6 +64,11 @@ RegisterNUICallback('spawnVehicle', function(data, cb)
   SetModelAsNoLongerNeeded(vehicleName)
 end)
 
+RegisterNuiCallback('vehicleList', function(data, cb)
+  debugPrint('Data sent by React', json.encode(data))
+  cb(VehicleDictionary)
+end)
+
 RegisterCommand('spawnCar', function()
   if Config.StaticSpawnZonesEnabled == false then
     toggleNuiFrame(true)

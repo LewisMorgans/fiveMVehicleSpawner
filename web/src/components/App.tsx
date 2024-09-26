@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { debugData } from "../utils/debugData";
 import { fetchNui } from "../utils/fetchNui";
 import { Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
-import vehicleList from '../assets/vehicleList.json'
 import "./App.css";
+import { SelectChangeEvent } from "@mui/material";
 
 debugData([
     {
@@ -13,39 +13,57 @@ debugData([
 ]);
 
 type VehicleDictionary = {
-    id: string,
-    value: string
-}
+    [key: string]: {
+        id: string;
+        value: string;
+    }[];
+};
 
 const App: React.FC = () => {
-    const [selectedFaction, setSelectedFaction] = useState<keyof typeof vehicleList | ''>('');
-    const [vehicles, setVehicles] = useState<VehicleDictionary[]>([]);
-    const [selectedVehicle, setSelectedVehicle] = useState("")
-    const vehicleFactions = Object.keys(vehicleList)
+    const [selectedFaction, setSelectedFaction] = useState<string>("");
+    const [vehicles, setVehicles] = useState<{ id: string; value: string }[]>([]);
+    const [selectedVehicle, setSelectedVehicle] = useState("");
+    const [vehicleFactions, setVehicleFactions] = useState<string[]>([]);
+    const [vehicleList, setVehicleList] = useState<VehicleDictionary | null>(null);
 
-    const handleFactionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        const faction = event.target.value as keyof typeof vehicleList;
+    const handleFactionChange = (event: SelectChangeEvent) => {
+        const faction = event.target.value;
         setSelectedFaction(faction);
-        setVehicles(vehicleList[faction] || []);
+        if (vehicleList && faction in vehicleList) {
+            setVehicles(vehicleList[faction]);
+        }
     };
 
-    function setVehicleRequest(event: React.ChangeEvent<{ value: unknown }>) {
-        const vehicle = event?.target.value as string || "";
+    function setVehicleRequest(event: SelectChangeEvent) {
+        const vehicle = event.target.value || "";
         setSelectedVehicle(vehicle);
     }
 
     const handleGetClientData = () => {
-        fetchNui("spawnVehicle", selectedVehicle)
+        fetchNui("spawnVehicle", selectedVehicle);
     };
+
+    useEffect(() => {
+        fetchNui<VehicleDictionary>("vehicleList").then((data) => {
+            if (data && typeof data === "object") {
+                setVehicleList(data);
+                setVehicleFactions(Object.keys(data));
+            }
+        });
+    }, []);
 
     return (
         <div className="nui-wrapper">
             <div className="nui-form">
-                <Typography variant="h5" gutterBottom marginBottom={4}>Vehicle Spawner</Typography>
+                <Typography variant="h5" gutterBottom marginBottom={4}>
+                    Vehicle Spawner
+                </Typography>
                 <FormGroup>
                     <Stack spacing={3}>
                         <FormControl fullWidth>
-                            <InputLabel id="service-faction-label" sx={{ color: "#fff" }}>Service Faction</InputLabel>
+                            <InputLabel id="service-faction-label" sx={{ color: "#fff" }}>
+                                Service Faction
+                            </InputLabel>
                             <Select
                                 labelId="service-faction-label"
                                 id="service-faction"
@@ -55,41 +73,50 @@ const App: React.FC = () => {
                                 MenuProps={{
                                     PaperProps: {
                                         sx: {
-                                            bgcolor: '#282c34',
-                                            color: 'white',
+                                            bgcolor: "#282c34",
+                                            color: "white",
                                         },
                                     },
                                 }}
-                                // @ts-ignore
                                 onChange={handleFactionChange}
                             >
                                 {vehicleFactions.map((factionName) => (
-                                    <MenuItem value={factionName}>{factionName}</MenuItem>
+                                    <MenuItem key={factionName} value={factionName}>
+                                        {factionName}
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
 
                         <FormControl fullWidth>
-                            <InputLabel id="select-vehicle-label" sx={{ color: "#fff" }}>Select Vehicle</InputLabel>
+                            <InputLabel id="select-vehicle-label" sx={{ color: "#fff" }}>
+                                Select Vehicle
+                            </InputLabel>
                             <Select
                                 labelId="select-vehicle-label"
                                 id="select-vehicle"
+                                value={selectedVehicle}
                                 label="Vehicle"
                                 sx={{ minWidth: 300, color: "#fff" }}
                                 MenuProps={{
                                     PaperProps: {
                                         sx: {
-                                            bgcolor: '#282c34',
-                                            color: 'white',
+                                            bgcolor: "#282c34",
+                                            color: "white",
                                         },
                                     },
                                 }}
-                                // @ts-ignore
                                 onChange={setVehicleRequest}
                             >
-                                {vehicles.map((vehicle, index) => (
-                                    <MenuItem key={index} value={vehicle.id}>{vehicle.value}</MenuItem>
-                                ))}
+                                {vehicles.length > 0 ? (
+                                    vehicles.map((vehicle, index) => (
+                                        <MenuItem key={index} value={vehicle.id}>
+                                            {vehicle.value}
+                                        </MenuItem>
+                                    ))
+                                ) : (
+                                    <MenuItem disabled>No vehicles available</MenuItem>
+                                )}
                             </Select>
                         </FormControl>
                         <Box>
